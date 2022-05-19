@@ -10,9 +10,11 @@ let font
 let instructions
 let debugCorner /* output debug text in the bottom left corner of the canvas */
 
+let svgTest
 
 function preload() {
     font = loadFont('data/consola.ttf')
+    svgTest = loadImage('u.svg')
 }
 
 
@@ -34,6 +36,7 @@ function setup() {
 function draw() {
     background(234, 34, 24)
 
+    image(svgTest, width/2, height/2)
 
 
     /* debugCorner needs to be last so its z-index is highest */
