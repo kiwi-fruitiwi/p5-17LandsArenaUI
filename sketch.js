@@ -4,17 +4,32 @@
  *
  *  ideas and visualization modules for the replay feature at 17Lands. mostly
  *  wishful thinking and having fun recreating the Arena UI
+ *
+ *  ☒ display 7 mana symbols
+ *  ☐ try mana symbol backgrounds using manaFont CSS styles
  */
 
 let font
 let instructions
 let debugCorner /* output debug text in the bottom left corner of the canvas */
 
-let svgTest
+let w, u, b, r, g, c, p
+let manaSymbols = []
+
+const LEFT_MARGIN = 60
+const TOP_MARGIN = 150 /* canvasHeight ÷ 2 ideally */
+const IMG_WIDTH = 50
+const PADDING = 32
 
 function preload() {
     font = loadFont('data/consola.ttf')
-    svgTest = loadImage('u.svg')
+    w = loadImage('w.svg')
+    u = loadImage('u.svg')
+    b = loadImage('b.svg')
+    r = loadImage('r.svg')
+    g = loadImage('g.svg')
+    p = loadImage('p.svg')
+    c = loadImage('c.svg')
 }
 
 
@@ -23,31 +38,58 @@ function setup() {
     cnv.parent('#canvas')
     colorMode(HSB, 360, 100, 100, 100)
     textFont(font, 14)
+    imageMode(CENTER)
+    rectMode(CENTER)
 
-    /* initialize instruction div */
+    debugCorner = new CanvasDebugCorner(5)
     instructions = select('#ins')
     instructions.html(`<pre>
         numpad 1 → freeze sketch</pre>`)
 
-    debugCorner = new CanvasDebugCorner(5)
+    manaSymbols.push(w, u, b, r, g, c, p)
+
+    for (let svg of manaSymbols) {
+        console.log(svg)
+        svg.resize(IMG_WIDTH, 0)
+    }
 }
 
 
 function draw() {
     background(234, 34, 24)
 
-    // svgTest.resize(200, 0)
-    // stroke(90, 100, 100)
+    tint(0, 0, 100, 80)
+    stroke(0, 0, 100, 80)
+    strokeWeight(1)
+    noFill()
+
+    const RECT_PADDING = 12
+    for (let i in manaSymbols) {
+        const svg = manaSymbols[i]
+        image(svg, LEFT_MARGIN + i*(IMG_WIDTH+PADDING), TOP_MARGIN)
+        rect(LEFT_MARGIN + i*(IMG_WIDTH+PADDING),
+            TOP_MARGIN,
+            IMG_WIDTH + RECT_PADDING,
+            IMG_WIDTH + RECT_PADDING,
+            3)
+    }
+
+    // black(drawingContext)
+
+    // stroke(89, 100, 100)
     // strokeWeight(3)
-    // point(width/2, height/2)
     // point(64, 64)
-    // image(svgTest, 0, 0)
-    black(drawingContext)
+    // point(width/2, height/2)
 
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)
     debugCorner.setText(`fps: ${frameRate().toFixed(0)}`, 1)
     debugCorner.show()
+}
+
+
+function displayManaSymbols() {
+
 }
 
 
